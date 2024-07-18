@@ -49,7 +49,7 @@ pipeline {
           sh 'npm rebuild node-sass'
           sh 'npm run build $BUILD_ENV'
           sh 'tar -zcvf k8s/dockerfiles/html.tar.gz -C dist .'
-          stash(name:'html',includes: 'k8s/dockerfiles/html.tar.gz')
+          stash(name:'html', includes: 'k8s/dockerfiles/html.tar.gz')
         }
       }
     }

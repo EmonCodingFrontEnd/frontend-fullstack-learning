@@ -19,54 +19,20 @@ spec:
         - name: fullstack-admin-web
           image: ${IMAGE}
           ports:
-            - containerPort: 8080
-          env:
-            - name: JAVA_TOOL_OPTIONS
-              value: >-
-                -Xms128m -Xmx128m -Xmn64m -Xss228k -XX:MetaspaceSize=64m
-                -Dspring.profiles.active=prod
+            - containerPort: 80
           resources:
             requests:
               # 1核心的CPU=1000m
               cpu: 10m
               memory: 10Mi
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 100m
+              memory: 100Mi
           # 容器的异常终止消息的路径，默认在 /dev/termination-log
           terminationMessagePath: /dev/termination-log
           # 容器终止消息的来源路径和策略，默认 File
           terminationMessagePolicy: File
           imagePullPolicy: IfNotPresent
-          # 就绪状态检查
-          readinessProbe:
-            httpGet:
-              path: /actuator/health/readiness
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 3
-            # 成功1次即表示容器健康
-            successThreshold: 1
-            # 连续5次失败，则判定容器不健康，默认3次
-            failureThreshold: 5
-          # 存活状态检查
-          livenessProbe:
-            httpGet:
-              path: /actuator/health/liveness
-              port: 8080
-              scheme: HTTP
-            # pod 创建10s后启动第一次探测
-            initialDelaySeconds: 60
-            # 每隔10s启动一次探测
-            periodSeconds: 10
-            # 超时时间3s
-            timeoutSeconds: 3
-            # 成功1次即表示容器健康
-            successThreshold: 1
-            # 连续5次失败，则判定容器不健康，默认3次
-            failureThreshold: 5
       restartPolicy: Always
       # 优雅停机等待时间
       terminationGracePeriodSeconds: 30
@@ -89,9 +55,9 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 8080
+      port: 80
       protocol: TCP
-      targetPort: 8080
+      targetPort: 80
       nodePort: 31000
   selector:
     app: fullstack-admin-web
