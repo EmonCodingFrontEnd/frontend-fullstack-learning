@@ -68,9 +68,9 @@ gulp.task('clean', function () {
   return del([versionPath])
 });
 // 清空历史
-gulp.task('cleanHistory', functiion() {
+gulp.task('cleanHistory', function() {
 	return del([distPath])
-})
+});
 
 
 //gulp.series|4.0 依赖
