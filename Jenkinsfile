@@ -1,5 +1,8 @@
 pipeline {
   agent {
+    node {
+      label 'maven'
+    }
     kubernetes {
       inheritFrom 'nodejs base'
       containerTemplate {
@@ -42,6 +45,8 @@ pipeline {
           sh 'npm config set registry https://registry.npmmirror.com'
           sh 'npm install --ignore-scripts --legacy-peer-deps && npm rebuild node-sass && npm run build $BUILD_ENV'
           sh 'tar -zcvf k8s/dockerfiles/html.tar.gz -C dist .'
+        }
+        container ('maven') {
           sh 'docker build -f k8s/Dockerfile -t $IMAGE .'
           withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID")]) {
             sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
