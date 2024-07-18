@@ -57,7 +57,7 @@ pipeline {
       steps {
         sh 'echo 构建并推送快照镜像到镜像仓库 $IMAGE'
         container ('maven') {
-          sh 'cd k8s && docker build -f Dockerfile -t $IMAGE .'
+          sh 'docker build -f k8s/Dockerfile -t $IMAGE .'
           withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID")]) {
             sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
             sh 'docker push $IMAGE'
