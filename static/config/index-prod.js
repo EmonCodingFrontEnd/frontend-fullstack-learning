@@ -5,10 +5,11 @@
   window.SITE_CONFIG = {}
 
   // api接口请求地址
-  window.SITE_CONFIG['baseUrl'] =
-    'http://renren-fast.fsmall-test:8080/renren-fast'
+  window.SITE_CONFIG['baseUrl'] = 'http://192.168.32.116:31012/renren-fast'
+  // window.SITE_CONFIG['baseUrl'] = 'http://localhost:8080/renren-fast'
   // gateway接口请求地址
-  window.SITE_CONFIG['baseGatewayUrl'] = 'http://fullstack-gateway.fsmall-test:8080'
+  window.SITE_CONFIG['baseGatewayUrl'] = 'http://192.168.32.116:31004'
+  // window.SITE_CONFIG['baseGatewayUrl'] = 'http://localhost:88'
 
   // cdn地址 = 域名 + 版本号
   window.SITE_CONFIG['domain'] = './' // 域名
