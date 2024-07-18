@@ -31,7 +31,7 @@ pipeline {
       }
     }
 
-    stage('构建并推送快照镜像') {
+    stage('安装、编译与打包') {
       agent {
         kubernetes {
           inheritFrom 'nodejs base'
@@ -49,6 +49,9 @@ pipeline {
           sh 'tar -zcvf k8s/dockerfiles/html.tar.gz -C dist .'
         }
       }
+    }
+
+    stage('构建并推送快照镜像') {
       steps {
         sh 'echo 构建并推送快照镜像到镜像仓库 $IMAGE'
         container ('maven') {
