@@ -40,7 +40,7 @@ pipeline {
         sh 'echo 构建并推送快照镜像到镜像仓库 $IMAGE'
         container('nodejs') {
           sh 'npm config set registry https://registry.npmmirror.com'
-          sh 'npm install && npm run build $BUILD_ENV'
+          sh 'npm install --ignore-scripts --legacy-peer-deps && npm rebuild node-sass && npm run build $BUILD_ENV'
           sh 'tar -zcvf k8s/dockerfiles/html.tar.gz -C dist .'
           sh 'docker build -f k8s/Dockerfile -t $IMAGE .'
           withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID")]) {
