@@ -42,12 +42,15 @@ pipeline {
         }
       }
       steps {
-        sh 'echo 构建并推送快照镜像到镜像仓库 $IMAGE'
+        sh 'echo 安装、编译与打包'
         container('nodejs') {
           sh 'npm config set registry https://registry.npmmirror.com'
           sh 'npm install --ignore-scripts --legacy-peer-deps && npm rebuild node-sass && npm run build $BUILD_ENV'
           sh 'tar -zcvf k8s/dockerfiles/html.tar.gz -C dist .'
         }
+      }
+      steps {
+        sh 'echo 构建并推送快照镜像到镜像仓库 $IMAGE'
         container ('maven') {
           sh 'docker build -f k8s/Dockerfile -t $IMAGE .'
           withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID")]) {
