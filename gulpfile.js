@@ -67,8 +67,15 @@ gulp.task('cleanBuild', function () {
 gulp.task('clean', function () {
   return del([versionPath])
 });
+// 清空历史
+gulp.task('cleanHistory', functiion() {
+	return del([distPath])
+})
 
 
 //gulp.series|4.0 依赖
 //gulp.parallel|4.0 多个依赖嵌套
 gulp.task('default',gulp.series(gulp.series('build','create:versionCatalog','replace:cdnUrl','replace:version','concat:config','cleanBuild')));
+gulp.task('qa',gulp.series(gulp.series('cleanHistory','build','create:versionCatalog','replace:cdnUrl','replace:version','concat:config','cleanBuild')));
+gulp.task('uat',gulp.series(gulp.series('cleanHistory','build','create:versionCatalog','replace:cdnUrl','replace:version','concat:config','cleanBuild')));
+gulp.task('prod',gulp.series(gulp.series('cleanHistory','build','create:versionCatalog','replace:cdnUrl','replace:version','concat:config','cleanBuild')));
