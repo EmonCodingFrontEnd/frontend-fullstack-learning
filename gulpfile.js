@@ -7,6 +7,14 @@ var distPath    = path.resolve('./dist');
 var version     = ''; // 版本号
 var versionPath = ''; // 版本号路径
 var env         = process.env.npm_config_qa ? 'qa' : process.env.npm_config_uat ? 'uat' : 'prod'; // 运行环境
+console.log( '当前环境：\nprocess.env.npm_config_argv=', process.env.npm_config_argv, '\nprocess.argv=', process.argv )
+if (!process.env.npm_config_argv) {
+  if (process.arch.length <= 2) {
+    throw new Error( '打得过你钱npm版本不支持process.env.npm_config_argv，请使用如下命令编译：\nnpm run build [qa|uat|prod]' )
+  }
+  env = process.argv.length > 2 ? process.argv[2] : env
+}
+console.log('env=', env)
 
 // 创建版本号(年月日时分)
 (function () {
