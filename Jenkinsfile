@@ -11,7 +11,7 @@ pipeline {
 
   parameters {
     choice(name: 'MODULE_NAME', choices: ['fullstack-admin-web'], description: '对于多模块项目，选择一个待构建的模块')
-    choice(name: 'BUILD_ENV', choices: ['qa','uat','prod'], description: '执行编译命令 npm run build $BUILD_ENV')
+    choice(name: 'BUILD_ENV', choices: ['prod','qa','uat'], description: '执行编译命令 npm run build $BUILD_ENV')
     string(name: 'TAG_NAME', defaultValue: '', description: 'SCM标签，指定后则为SCM和镜像打标签，比如：v1.0.0，默认不打标签')
     choice(name: 'DEPLOY_TO', choices: ['','fsmall-test','fsmall-prod'], description: '请选择部署环境，默认不部署')
   }
