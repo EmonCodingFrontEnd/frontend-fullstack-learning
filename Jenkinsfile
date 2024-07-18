@@ -48,6 +48,8 @@ pipeline {
           sh 'npm install --ignore-scripts --legacy-peer-deps'
           sh 'npm rebuild node-sass'
           sh 'npm run build $BUILD_ENV'
+          sh 'tar -zcvf k8s/dockerfiles/html.tar.gz -C dist .'
+          stash(name:'html',includes: 'k8s/dockerfiles/html.tar.gz')
         }
       }
     }
@@ -56,7 +58,7 @@ pipeline {
       steps {
         sh 'echo 构建并推送快照镜像到镜像仓库 $IMAGE'
         container ('maven') {
-          sh 'tar -zcvf k8s/dockerfiles/html.tar.gz -C dist .'
+          unstash("html")
           sh 'docker build -f k8s/Dockerfile -t $IMAGE .'
           withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID")]) {
             sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
