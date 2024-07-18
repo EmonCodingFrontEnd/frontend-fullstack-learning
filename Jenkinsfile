@@ -45,7 +45,9 @@ pipeline {
         sh 'echo 安装、编译与打包'
         container('nodejs') {
           sh 'npm config set registry https://registry.npmmirror.com'
-          sh 'npm install --ignore-scripts --legacy-peer-deps && npm rebuild node-sass && npm run build $BUILD_ENV'
+          sh 'npm install --ignore-scripts --legacy-peer-deps'
+          sh 'npm rebuild node-sass'
+          sh 'npm run build $BUILD_ENV'
           sh 'tar -zcvf k8s/dockerfiles/html.tar.gz -C dist .'
         }
       }
