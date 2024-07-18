@@ -2,13 +2,6 @@ pipeline {
   agent {
     node {
       label 'maven'
-    },
-    kubernetes {
-      inheritFrom 'nodejs base'
-      containerTemplate {
-        name 'nodejs'
-        image 'node:16.20.2'
-      }
     }
   }
 
@@ -39,6 +32,15 @@ pipeline {
     }
 
     stage('构建并推送快照镜像') {
+      agent {
+        kubernetes {
+          inheritFrom 'nodejs base'
+          containerTemplate {
+            name 'nodejs'
+            image 'node:16.20.2'
+          }
+        }
+      }
       steps {
         sh 'echo 构建并推送快照镜像到镜像仓库 $IMAGE'
         container('nodejs') {
